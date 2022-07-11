@@ -1,0 +1,71 @@
+package com.drmodi.food.ordering.system.order.service.domain.mapper;
+
+import com.drmodi.food.ordering.system.domain.valueobject.CustomerId;
+import com.drmodi.food.ordering.system.domain.valueobject.Money;
+import com.drmodi.food.ordering.system.domain.valueobject.ProductId;
+import com.drmodi.food.ordering.system.domain.valueobject.RestaurantId;
+import com.drmodi.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
+import com.drmodi.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
+import com.drmodi.food.ordering.system.order.service.domain.dto.create.OrderAddress;
+
+import com.drmodi.food.ordering.system.order.service.domain.entity.Order;
+import com.drmodi.food.ordering.system.order.service.domain.entity.OrderItem;
+import com.drmodi.food.ordering.system.order.service.domain.entity.Product;
+import com.drmodi.food.ordering.system.order.service.domain.entity.Restaurant;
+import com.drmodi.food.ordering.system.order.service.domain.valueobject.StreetAddress;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Component
+public class OrderDataMapper {
+
+    public Restaurant createOrderCommandToRestaurant(CreateOrderCommand createOrderCommand){
+        return Restaurant.builder()
+                .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
+                .products(createOrderCommand.getItems().stream().map(orderItem ->
+                        new Product(new ProductId(orderItem.getProductId()))).collect(Collectors.toList()))
+                .build();
+    }
+
+    public Order createOrderCommandToOrder(CreateOrderCommand orderCommand){
+        return Order.builder()
+                .customerId(new CustomerId(orderCommand.getCustomerId()))
+                .restaurantId(new RestaurantId(orderCommand.getRestaurantId()))
+                .deliveryAddress(orderAddressToStreetAddress(orderCommand.getAddress()))
+                .price(new Money(orderCommand.getPrice()))
+                .items(orderItemsToOrderItemEntities(orderCommand.getItems()))
+                .build();
+    }
+
+    public CreateOrderResponse orderToCreateOrderResponse(Order order, String message){
+        return CreateOrderResponse.builder()
+                .orderTrackingId(order.getTrackingId().getValue())
+                .orderStatus(order.getOrderStatus())
+                .message(message)
+                .build();
+    }
+
+
+    private List<OrderItem> orderItemsToOrderItemEntities(
+            List<com.drmodi.food.ordering.system.order.service.domain.dto.create.OrderItem> orderItems) {
+        return orderItems.stream()
+                .map(orderItem -> OrderItem.builder()
+                        .product(new Product(new ProductId(orderItem.getProductId())))
+                        .price(new Money(orderItem.getPrice()))
+                        .quantity(orderItem.getQuantity())
+                        .subTotal(new Money(orderItem.getSubTotal()))
+                        .build()).collect(Collectors.toList());
+    }
+
+    private StreetAddress orderAddressToStreetAddress(OrderAddress address) {
+        return new StreetAddress(
+                UUID.randomUUID(),
+                address.getStreet(),
+                address.getPostalCode(),
+                address.getCity());
+    }
+
+}
