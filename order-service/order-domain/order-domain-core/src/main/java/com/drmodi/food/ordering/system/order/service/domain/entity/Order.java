@@ -10,6 +10,7 @@ import com.drmodi.food.ordering.system.order.service.domain.valueobject.Tracking
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Order extends AggregateRoot<OrderId> {
     private final CustomerId customerId;
@@ -22,6 +23,7 @@ public class Order extends AggregateRoot<OrderId> {
     private OrderStatus orderStatus;
     private List<String> failureMessages;
 
+    public static final String FAILURE_MESSAGE_DELIMITER = ",";
 
     public void initializeOrder(){
         setId(new OrderId(UUID.randomUUID()));
@@ -77,7 +79,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     private void updateFailureMessages(List<String> failureMessages) {
         if(this.failureMessages != null && failureMessages != null){
-            this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).toList());
+            this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).collect(Collectors.toList()));
         }
         if(this.failureMessages == null){
             this.failureMessages = failureMessages;
