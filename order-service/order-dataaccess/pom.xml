@@ -23,6 +23,8 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>LATEST</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>
