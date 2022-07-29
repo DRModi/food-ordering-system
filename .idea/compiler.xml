@@ -7,20 +7,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="kafka-producer" />
-        <module name="kafka-config-data" />
-        <module name="order-application-service" />
-        <module name="order-domain-core" />
-        <module name="order-application" />
-        <module name="kafka-consumer" />
-        <module name="infrastructure" />
         <module name="common-application" />
         <module name="kafka-model" />
-        <module name="common-domain" />
-        <module name="order-container" />
         <module name="customer-service" />
-        <module name="order-messaging" />
+        <module name="order-application-service" />
+        <module name="kafka-consumer" />
+        <module name="kafka-producer" />
+        <module name="kafka-config-data" />
+        <module name="order-container" />
         <module name="order-dataaccess" />
+        <module name="order-messaging" />
+        <module name="infrastructure" />
+        <module name="common-domain" />
+        <module name="order-application" />
+        <module name="order-domain-core" />
       </profile>
     </annotationProcessing>
   </component>
