@@ -1,4 +1,0 @@
-com/drmodi/food/ordering/system/kafka/producer/service/impl/KafkaProducerImpl.class
-com/drmodi/food/ordering/system/kafka/producer/exception/KafkaProducerException.class
-com/drmodi/food/ordering/system/kafka/producer/KafkaProducerConfig.class
-com/drmodi/food/ordering/system/kafka/producer/service/KafkaProducer.class
